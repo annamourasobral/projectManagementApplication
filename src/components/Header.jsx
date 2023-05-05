@@ -1,15 +1,17 @@
-import * as React from 'react';
+import { useContext } from 'react';
+import TranslationContext from '../TranslationContext';
+
+import LanguageSelect from './LanguageSelect';
+
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-// import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
-import LanguageSelect from './LanguageSelect';
-import i18next from 'i18next';
 
 function Header() {
+    const { translate } = useContext(TranslationContext);
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position='static'>
@@ -28,7 +30,7 @@ function Header() {
                         component='div'
                         sx={{ flexGrow: 1 }}
                     >
-                        {i18next.t('project-management')}
+                        {translate('project-management')}
                     </Typography>
                     <LanguageSelect />
                 </Toolbar>

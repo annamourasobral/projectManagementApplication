@@ -8,7 +8,8 @@ import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 // import CardActions from '@mui/material/CardActions';
-import i18next from 'i18next';
+import { useContext } from 'react';
+import TranslationContext from '../TranslationContext';
 
 const TaskForm = ({ task, tasks, setTasks, handleClose, idTaskSelected }) => {
     const [idTask, setIdTask] = useState();
@@ -24,6 +25,7 @@ const TaskForm = ({ task, tasks, setTasks, handleClose, idTaskSelected }) => {
         setIdTask(nextId);
     }, [tasks]);
 
+    const { translate } = useContext(TranslationContext);
     const handleResource = (event) => {
         setResourceTask(event.target.value);
     };
@@ -76,7 +78,7 @@ const TaskForm = ({ task, tasks, setTasks, handleClose, idTaskSelected }) => {
     return (
         <Grid container spacing={2}>
             <Card sx={style}>
-                <CardHeader title={i18next.t('task')} />
+                <CardHeader title={translate('task')} />
                 <CardContent
                     sx={{
                         width: '95%',
@@ -94,7 +96,7 @@ const TaskForm = ({ task, tasks, setTasks, handleClose, idTaskSelected }) => {
                                 }}
                             />
                             <FormHelperText id='tarefa_titulo_helper_text'>
-                                {i18next.t('task-title')}
+                                {translate('task-title')}
                             </FormHelperText>
                         </FormControl>
                     </Grid>
@@ -109,7 +111,7 @@ const TaskForm = ({ task, tasks, setTasks, handleClose, idTaskSelected }) => {
                                 }}
                             />
                             <FormHelperText id='tarefa_descricao_helper_text'>
-                                {i18next.t('task-description')}
+                                {translate('task-description')}
                             </FormHelperText>
                         </FormControl>
                     </Grid>
@@ -131,7 +133,7 @@ const TaskForm = ({ task, tasks, setTasks, handleClose, idTaskSelected }) => {
                                     }}
                                 />
                                 <FormHelperText id='tarefa_inicio_helper_text'>
-                                    {i18next.t('task-start')}
+                                    {translate('task-start')}
                                 </FormHelperText>
                             </FormControl>
                         </Grid>
@@ -152,14 +154,14 @@ const TaskForm = ({ task, tasks, setTasks, handleClose, idTaskSelected }) => {
                                     }}
                                 />
                                 <FormHelperText id='tarefa_fim_helper_text'>
-                                    {i18next.t('task-end')}
+                                    {translate('task-end')}
                                 </FormHelperText>
                             </FormControl>
                         </Grid>
                         <Grid item xs={3}>
                             <FormControl fullWidth>
                                 <InputLabel htmlFor='tarefa_recurso'>
-                                    {i18next.t('resource')}
+                                    {translate('resource')}
                                 </InputLabel>
                                 <Select
                                     id='tarefa_recurso'
@@ -187,7 +189,7 @@ const TaskForm = ({ task, tasks, setTasks, handleClose, idTaskSelected }) => {
                         <Grid item xs={3}>
                             <FormControl fullWidth>
                                 <InputLabel htmlFor='tarefa_recurso'>
-                                    {i18next.t('status')}
+                                    {translate('status')}
                                 </InputLabel>
                                 <Select
                                     id='tarefa_status'
@@ -201,13 +203,13 @@ const TaskForm = ({ task, tasks, setTasks, handleClose, idTaskSelected }) => {
                                     }}
                                 >
                                     <MenuItem value={'Aguardando'}>
-                                        {i18next.t('waiting')}
+                                        {translate('waiting')}
                                     </MenuItem>
                                     <MenuItem value={'Em Andamento'}>
-                                        {i18next.t('ongoing')}
+                                        {translate('ongoing')}
                                     </MenuItem>
                                     <MenuItem value={'Concluída'}>
-                                        {i18next.t('finished')}
+                                        {translate('finished')}
                                     </MenuItem>
                                 </Select>
                             </FormControl>
@@ -219,7 +221,7 @@ const TaskForm = ({ task, tasks, setTasks, handleClose, idTaskSelected }) => {
                                     variant='contained'
                                     onClick={handleSave}
                                 >
-                                    {i18next.t('save')}
+                                    {translate('save')}
                                 </Button>
                             </Grid>
                             <Grid item xs={1}>
@@ -228,7 +230,7 @@ const TaskForm = ({ task, tasks, setTasks, handleClose, idTaskSelected }) => {
                                     variant='outlined'
                                     onClick={handleClose}
                                 >
-                                    {i18next.t('cancel')}
+                                    {translate('cancel')}
                                 </Button>
                             </Grid>
                         </Grid>

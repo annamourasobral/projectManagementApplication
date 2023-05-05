@@ -1,4 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext, useMemo } from 'react';
+import TranslationContext from '../../TranslationContext';
+
+import TaskForm from '../../components/TaskForm';
+
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -14,87 +18,6 @@ import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import Modal from '@mui/material/Modal';
-import TaskForm from '../../components/TaskForm';
-import i18next from 'i18next';
-
-//The function below is used to create the array containing the initial data of the task listing.
-function createData(
-    idTask,
-    titleTask,
-    descriptionTask,
-    startTask,
-    endTask,
-    statusTask,
-    resourceTask
-) {
-    return {
-        idTask,
-        titleTask,
-        descriptionTask,
-        startTask,
-        endTask,
-        statusTask,
-        resourceTask,
-    };
-}
-
-//Definition of the array containing the initial data of the task listing
-export const data = [
-    createData(
-        1,
-        'Tarefa 1',
-        'Descrição da Tarefa 1',
-        '2022-01-01',
-        '2022-01-02',
-        'Concluída',
-        'Recurso 1'
-    ),
-    createData(
-        2,
-        'Tarefa 2',
-        'Descrição da Tarefa 2',
-        '2022-01-03',
-        '2022-01-04',
-        'Em Andamento',
-        'Recurso 2'
-    ),
-    createData(
-        3,
-        'Tarefa 3',
-        'Descrição da Tarefa 3',
-        '2022-01-04',
-        '2022-01-05',
-        'Em Andamento',
-        'Recurso 3'
-    ),
-    createData(
-        4,
-        'Tarefa 4',
-        'Descrição da Tarefa 4',
-        '2022-01-05',
-        '2022-01-06',
-        'Em Andamento',
-        'Recurso 4'
-    ),
-    createData(
-        5,
-        'Tarefa 5',
-        'Descrição da Tarefa 5',
-        '2022-01-06',
-        '2022-01-07',
-        'Em Andamento',
-        'Recurso 5'
-    ),
-    createData(
-        6,
-        'Tarefa 6',
-        'Descrição da Tarefa 6',
-        '2022-01-07',
-        '2022-01-08',
-        'Aguardando',
-        'Recurso 6'
-    ),
-];
 
 const ListTask = () => {
     const [open, setOpen] = useState(false);
@@ -102,15 +25,99 @@ const ListTask = () => {
     const [tasks, setTasks] = useState([]);
     const [task, setTask] = useState();
     const [idSelectedTask, setIdSelectedTask] = useState([]);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-    // const handleOpenEdit = () => setOpenEdit(true);
-    const handleCloseEdit = () => setOpenEdit(false);
+    const { translate } = useContext(TranslationContext);
+
+    //The function below is used to create the array containing the initial data of the task listing.
+    function createData(
+        idTask,
+        titleTask,
+        descriptionTask,
+        startTask,
+        endTask,
+        statusTask,
+        resourceTask
+    ) {
+        return {
+            idTask,
+            titleTask,
+            descriptionTask,
+            startTask,
+            endTask,
+            statusTask,
+            resourceTask,
+        };
+    }
+
+    //Definition of the array containing the initial data of the task listing
+    const data = useMemo(
+        () => [
+            createData(
+                1,
+                `${translate('task')} 1`,
+                `${translate('task-description')} 1`,
+                '2022-01-01',
+                '2022-01-02',
+                `${translate('finished')}`,
+                `${translate('resource')} 1`
+            ),
+            createData(
+                2,
+                `${translate('task')} 2`,
+                `${translate('task-description')} 2`,
+                '2022-01-03',
+                '2022-01-04',
+                `${translate('ongoing')}`,
+                `${translate('resource')} 2`
+            ),
+            createData(
+                3,
+                `${translate('task')} 3`,
+                `${translate('task-description')} 3`,
+                '2022-01-04',
+                '2022-01-05',
+                `${translate('ongoing')}`,
+                `${translate('resource')} 3`
+            ),
+            createData(
+                4,
+                `${translate('task')} 4`,
+                `${translate('task-description')} 4`,
+                '2022-01-05',
+                '2022-01-06',
+                `${translate('finished')}`,
+                `${translate('resource')} 4`
+            ),
+            createData(
+                5,
+                `${translate('task')} 5`,
+                `${translate('task-description')} 5`,
+                '2022-01-06',
+                '2022-01-07',
+                `${translate('ongoing')}`,
+                `${translate('resource')} 5`
+            ),
+            createData(
+                6,
+                `${translate('task')} 6`,
+                `${translate('task-description')} 6`,
+                '2022-01-07',
+                '2022-01-08',
+                `${translate('waiting')}`,
+                `${translate('resource')} 6`
+            ),
+        ],
+        [translate]
+    );
 
     //The array defined above is set as the contents of the Tasks state in the component's initial rendering.
     useEffect(() => {
         setTasks(data);
-    }, []);
+    }, [data]);
+
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    // const handleOpenEdit = () => setOpenEdit(true);
+    const handleCloseEdit = () => setOpenEdit(false);
 
     const handleEdit = (id) => {
         setIdSelectedTask(id);
@@ -139,8 +146,8 @@ const ListTask = () => {
         <>
             <Card>
                 <CardHeader
-                    title={i18next.t('tasks')}
-                    subheader={i18next.t('list-of-tasks')}
+                    title={translate('tasks')}
+                    subheader={translate('list-of-tasks')}
                 />
                 <CardContent>
                     <TableContainer component={Paper}>
@@ -152,21 +159,21 @@ const ListTask = () => {
                             <TableHead>
                                 <TableRow>
                                     <TableCell>#</TableCell>
-                                    <TableCell>{i18next.t('title')}</TableCell>
+                                    <TableCell>{translate('title')}</TableCell>
                                     <TableCell align='right'>
-                                        {i18next.t('description')}
+                                        {translate('description')}
                                     </TableCell>
                                     <TableCell align='right'>
-                                        {i18next.t('start')}
+                                        {translate('start')}
                                     </TableCell>
                                     <TableCell align='right'>
-                                        {i18next.t('end')}
+                                        {translate('end')}
                                     </TableCell>
                                     <TableCell align='right'>
-                                        {i18next.t('status')}
+                                        {translate('status')}
                                     </TableCell>
                                     <TableCell align='right'>
-                                        {i18next.t('resource')}
+                                        {translate('resource')}
                                     </TableCell>
                                     <TableCell align='left'></TableCell>
                                     <TableCell align='left'></TableCell>
@@ -237,10 +244,10 @@ const ListTask = () => {
                         variant='contained'
                         onClick={handleOpen}
                     >
-                        {i18next.t('create')}
+                        {translate('create')}
                     </Button>
                     <Button size='small' variant='outlined'>
-                        {i18next.t('cancel')}
+                        {translate('cancel')}
                     </Button>
                 </CardActions>
             </Card>
@@ -285,67 +292,3 @@ const ListTask = () => {
 };
 
 export default ListTask;
-
-// createData(
-//     1,
-//     `${i18next.t('task')} 1`,
-//     `${i18next.t('task-description')} 1`,
-//     '2022-01-01',
-//     '2022-01-02',
-//     `${i18next.t('finished')}`,
-//     `${i18next.t('resource')} 1`
-// ),
-// createData(
-//     2,
-//     `${i18next.t('task')} 2`,
-//     `${i18next.t('task-description')} 2`,
-//     '2022-01-03',
-//     '2022-01-04',
-//     `${i18next.t('ongoing')}`,
-//     `${i18next.t('resource')} 2`
-// ),
-// createData(
-//     3,
-//     `${i18next.t('task')} 3`,
-//     `${i18next.t('task-description')} 3`,
-//     '2022-01-04',
-//     '2022-01-05',
-//     `${i18next.t('ongoing')}`,
-//     `${i18next.t('resource')} 3`
-// ),
-// createData(
-//     4,
-//     `${i18next.t('task')} 4`,
-//     `${i18next.t('task-description')} 4`,
-//     '2022-01-05',
-//     '2022-01-06',
-//     `${i18next.t('Finished')}`,
-//     `${i18next.t('resource')} 4`
-// ),
-// createData(
-//     5,
-//     `${i18next.t('task')} 5`,
-//     `${i18next.t('task-description')} 5`,
-//     '2022-01-06',
-//     '2022-01-07',
-//     `${i18next.t('ongoing')}`,
-//     `${i18next.t('resource')} 5`
-// ),
-// createData(
-//     6,
-//     `${i18next.t('task')} 6`,
-//     `${i18next.t('task-description')} 6`,
-//     '2022-01-07',
-//     '2022-01-08',
-//     `${i18next.t('waiting')}`,
-//     `${i18next.t('resource')} 6`
-// ),
-// createData(
-//     7,
-//     'tarefa',
-//     `${i18next.t('task-description')} 6`,
-//     '2022-01-07',
-//     '2022-01-08',
-//     `${i18next.t('waiting')}`,
-//     `${i18next.t('resource')} 6`
-// ),
