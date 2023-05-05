@@ -7,7 +7,6 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
-// import CardActions from '@mui/material/CardActions';
 import { useContext } from 'react';
 import TranslationContext from '../TranslationContext';
 
@@ -19,11 +18,6 @@ const TaskForm = ({ task, tasks, setTasks, handleClose, idTaskSelected }) => {
     const [endTask, setEndTask] = useState('');
     const [resourceTask, setResourceTask] = useState('');
     const [statusTask, setStatusTask] = useState('');
-    //Below a variable is declared to store the id of the task, adding 1 to the highest id currently existing in the Tasks state
-    useEffect(() => {
-        let nextId = Math.max(...tasks.map((task) => task.idTask)) + 1;
-        setIdTask(nextId);
-    }, [tasks]);
 
     const { translate } = useContext(TranslationContext);
     const handleResource = (event) => {
@@ -59,14 +53,17 @@ const TaskForm = ({ task, tasks, setTasks, handleClose, idTaskSelected }) => {
 
     useEffect(() => {
         //console.log('Tarefa selecionada: ' + JSON.stringify(task));
-        setIdTask(idTaskSelected);
-        setTitleTask(task.titleTask);
-        setDescriptionTask(task.descriptionTask);
-        setStartTask(task.startTask);
-        setEndTask(task.endTask);
-        setResourceTask(task.resourceTask);
-        setStatusTask(task.statusTask);
+        if (task) {
+            setIdTask(idTaskSelected);
+            setTitleTask(task.titleTask);
+            setDescriptionTask(task.descriptionTask);
+            setStartTask(task.startTask);
+            setEndTask(task.endTask);
+            setResourceTask(task.resourceTask);
+            setStatusTask(task.statusTask);
+        }
     }, [
+        task,
         idTaskSelected,
         task.descriptionTask,
         task.endTask,
@@ -75,6 +72,7 @@ const TaskForm = ({ task, tasks, setTasks, handleClose, idTaskSelected }) => {
         task.statusTask,
         task.titleTask,
     ]);
+
     return (
         <Grid container spacing={2}>
             <Card sx={style}>
@@ -174,14 +172,14 @@ const TaskForm = ({ task, tasks, setTasks, handleClose, idTaskSelected }) => {
                                         fontWeight: 400,
                                     }}
                                 >
-                                    <MenuItem value={'Recurso 1'}>
-                                        Recurso 1
+                                    <MenuItem value={'Resource 1'}>
+                                        {`${translate('resource')} 1`}
                                     </MenuItem>
-                                    <MenuItem value={'Recurso 2'}>
-                                        Recurso 2
+                                    <MenuItem value={'Resource 2'}>
+                                        {`${translate('resource')} 2`}
                                     </MenuItem>
-                                    <MenuItem value={'Recurso 3'}>
-                                        Recurso 3
+                                    <MenuItem value={'Resource 3'}>
+                                        {`${translate('resource')} 3`}
                                     </MenuItem>
                                 </Select>
                             </FormControl>
@@ -202,13 +200,13 @@ const TaskForm = ({ task, tasks, setTasks, handleClose, idTaskSelected }) => {
                                         fontWeight: 400,
                                     }}
                                 >
-                                    <MenuItem value={'Aguardando'}>
+                                    <MenuItem value={'Waiting'}>
                                         {translate('waiting')}
                                     </MenuItem>
-                                    <MenuItem value={'Em Andamento'}>
+                                    <MenuItem value={'Ongoing'}>
                                         {translate('ongoing')}
                                     </MenuItem>
-                                    <MenuItem value={'Concluída'}>
+                                    <MenuItem value={'Finished'}>
                                         {translate('finished')}
                                     </MenuItem>
                                 </Select>
